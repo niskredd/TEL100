@@ -7,6 +7,9 @@ unsigned char s1_trig = 5;
 unsigned char s2_echo = 6;
 unsigned char s2_trig = 7;
 
+unsigned char pop_max = 5;
+unsigned char pop_now = 0;
+
 int s1init_dist = 0;
 int s2init_dist = 0;
 
@@ -40,14 +43,16 @@ void loop() {
   int sensor2Val = get_dist(s2_echo, s2_trig);
   
 
-  if(currentPeople = maxPeople){
+  if(pop_now = pop_max){
+    noTone(buzzer);
     digitalWrite(red, HIGH); 
     digitalWrite(green, LOW);
   }
-  else if (currentPeople > maxPeople){
-      //bizzzzz
+  else if (pop_now > pop_max){
+      tone(buzzer, 1500);
   }
   else{
+    noTone(buzzer);
     digitalWrite(red, LOW); 
     digitalWrite(green, HIGH);  
   }
