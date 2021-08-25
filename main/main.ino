@@ -19,7 +19,7 @@ int get_dist(unsigned char echo, unsigned char trig) {
   digitalWrite(trig, LOW);
   delayMicroseconds(2);
   digitalWrite(trig, HIGH);
-  delayMicroseconds(10);
+  delayMicroseconds(15);
   digitalWrite(trig, LOW);
 
   pinMode(echo, INPUT);
@@ -34,8 +34,9 @@ void setup() {
   pinMode(buzzer, OUTPUT);
 
   delay(500);
-  s2init_dist = get_dist(s1_echo, s1_trig);
+  s1init_dist = get_dist(s1_echo, s1_trig);
   s2init_dist = get_dist(s2_echo, s2_trig);
+  Serial.println(pop_now);
 }
 
 void loop() {
@@ -43,13 +44,15 @@ void loop() {
   int s2dist = get_dist(s2_echo, s2_trig);
 
   if (s1dist < s1init_dist - 30){
-    pop_now ++;
+    pop_now++;
+    delay(500);
   }
   else if (s2dist < s2init_dist - 30){
-    pop_now --;
+    pop_now--;
+    delay(500);
   }
 
-  if(pop_now = pop_max){
+  if(pop_now == pop_max){
     noTone(buzzer);
     digitalWrite(red, HIGH); 
     digitalWrite(green, LOW);
@@ -62,4 +65,7 @@ void loop() {
     digitalWrite(red, LOW); 
     digitalWrite(green, HIGH);  
   }
+
+  Serial.print("Antall   ");
+  Serial.println(pop_now);
 }
