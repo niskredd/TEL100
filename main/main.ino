@@ -39,9 +39,15 @@ void setup() {
 }
 
 void loop() {
-  int sensor1Val = get_dist(s1_echo, s1_trig);
-  int sensor2Val = get_dist(s2_echo, s2_trig);
-  
+  int s1dist = get_dist(s1_echo, s1_trig);
+  int s2dist = get_dist(s2_echo, s2_trig);
+
+  if (s1dist < s1init_dist - 30){
+    pop_now ++;
+  }
+  else if (s2dist < s2init_dist - 30){
+    pop_now --;
+  }
 
   if(pop_now = pop_max){
     noTone(buzzer);
