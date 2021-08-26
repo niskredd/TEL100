@@ -1,4 +1,4 @@
-
+//Oppsett
 unsigned char red = 3;
 unsigned char green = 2;
 unsigned char buzzer = 9;
@@ -13,7 +13,7 @@ unsigned char pop_now = 0;
 int s1init_dist = 0;
 int s2init_dist = 0;
 
-
+//Lese av avstaden til et objekt
 int get_dist(unsigned char echo, unsigned char trig) {
   pinMode(trig, OUTPUT);
   digitalWrite(trig, LOW);
@@ -27,6 +27,8 @@ int get_dist(unsigned char echo, unsigned char trig) {
   return duration / 58;
 }
 
+
+//Innstillinger for oppstart. 
 void setup() {
   Serial.begin(9600);
   pinMode(red, OUTPUT);
@@ -43,6 +45,7 @@ void loop() {
   int s1dist = get_dist(s1_echo, s1_trig);
   int s2dist = get_dist(s2_echo, s2_trig);
 
+  //Sjekke forandringer i avstad siden inisiering.
   if (s1dist < s1init_dist - 30){
     pop_now++;
     delay(500);
@@ -52,6 +55,7 @@ void loop() {
     delay(500);
   }
 
+  //Sjekke antallet menneseker i orådet
   if(pop_now == pop_max){
     noTone(buzzer);
     digitalWrite(red, HIGH); 
@@ -66,6 +70,7 @@ void loop() {
     digitalWrite(green, HIGH);  
   }
 
+  //Sriver ut antallet mennesker i COM port
   Serial.print("Antall   ");
   Serial.println(pop_now);
 }
