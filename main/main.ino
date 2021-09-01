@@ -28,12 +28,13 @@ int get_dist(unsigned char echo, unsigned char trig) {
 }
 
 
+//Avventer ny telling til begge sensorene er måler initierings avstanden
 bool wait_sensor(){
-  if((get_dist(s2_echo, s2_trig) < s2init_dist - 30) || (get_dist(s1_echo, s1_trig) < s1init_dist - 30)){
-    delay(500);
-    return true;
+  delay(1000);
+  if((get_dist(s2_echo, s2_trig) > s2init_dist - 10) && (get_dist(s1_echo, s1_trig) > s1init_dist - 10)){
+    return false;
   }
-  else{   return false; }
+  else{   return true; }
 }
 
 //Innstillinger for oppstart. 
@@ -67,26 +68,33 @@ void setup() {
 }
 
 void loop() {
+  //Sjekk avstand
   int s1dist = get_dist(s1_echo, s1_trig);
-  int s2dist = get_dist(s2_echo, s2_trig);
+  int s2dist = get_dist(s2_echo, s2_trig); 
+
   
   //Sjekke forandringer i avstad siden inisiering.
-  if (s1dist < s1init_dist - 30){
-    pop_now++;
+  if (s1dist < s1init_dist - 40){
+    Serial.print("S1:   X  ");
     Serial.println(s1dist);
+    Serial.print("S2:      ");
+    Serial.println(s2dist);
+    pop_now++;
     while(wait_sensor());
-    Serial.println("One person more in area");
     Serial.print("Customers   ");
     Serial.println(pop_now);
   }
-  else if (s2dist < s2init_dist - 30){
+  
+  if (s2dist < s2init_dist - 40){
+    Serial.print("S1:      ");
+    Serial.println(s1dist);
+    Serial.print("S2:   X  ");
+    Serial.println(s2dist);
     pop_now--;
     if(pop_now < 0){
       pop_now = 0;
     }
-    Serial.println(s2dist);
     while(wait_sensor());
-    Serial.println("One person less in area");
     Serial.print("Customers   ");
     Serial.println(pop_now);
   }
